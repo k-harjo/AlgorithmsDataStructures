@@ -1,0 +1,106 @@
+package project7;
+
+class Node {
+    String key;
+    Node next;
+
+    public Node(String key) {
+        this.key = key;
+        this.next = null;
+    }
+}
+
+
+
+
+package project7;
+
+class HashTable {
+    private final static int TABLE_SIZE = 256; 
+    Node[] table;
+
+    HashTable() {
+        table = new Node[TABLE_SIZE];
+    }
+
+    // Hash function
+    int hash(String key) {
+        int hashValue = key.hashCode();
+        return Math.abs(hashValue) % TABLE_SIZE; // Use Math.abs to ensure non-negativity
+    }
+
+    // Insert a key into the hash table
+    void insert(String key) {
+        int index = hash(key);
+        Node newNode = new Node(key);
+
+        if (table[index] == null) {
+            table[index] = newNode;
+        } else {
+            Node current = table[index];
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+    }
+
+    // Search for a key in the hash table
+    boolean search(String key) {
+        int index = hash(key);
+        Node current = table[index];
+        int elementsInspected = 0;
+
+        while (current != null) {
+            elementsInspected++;
+            if (current.key.equals(key)) {
+                System.out.println(key + " found after inspecting " + elementsInspected + " elements.");
+                return true;
+            }
+            current = current.next;
+        }
+
+        System.out.println(key + " not found after inspecting " + elementsInspected + " elements.");
+        return false;
+    }
+}
+ 
+
+
+package project7;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        HashTable hashTable = new HashTable();
+
+        // Read words from file and insert into the hash table
+        try {
+            Scanner scanner = new Scanner(new File("input.txt"));
+            while (scanner.hasNext()) {
+                String word = scanner.next().replaceAll("[^a-zA-Z]", "").toLowerCase();
+                hashTable.insert(word);
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+            return;
+        }
+
+        // User interface for word search
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Enter words to search or type 'exit' to quit:");
+        while (true) {
+            String input = userInput.next();
+            if (input.equals("exit")) {
+                break;
+            }
+            hashTable.search(input);
+        }
+        userInput.close();
+    }
+}
+

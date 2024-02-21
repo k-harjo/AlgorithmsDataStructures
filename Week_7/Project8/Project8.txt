@@ -1,0 +1,114 @@
+package project8;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Graph {
+    private final static int MAX_VALUE = Integer.MAX_VALUE;
+    private final static int TABLE_SIZE = 15; // Number of vertices
+    private int[][] adjacencyMatrix = new int[TABLE_SIZE][TABLE_SIZE];
+
+    // Vertex names array, based on the image provided
+    private String[] vertices = {
+        "Mohave", "Coconino", "Navajo", "Apache", "Greenlee",
+        "Cochise", "Santa Cruz", "Pima", "Pinal", "Graham",
+        "Gila", "Yavapai", "La Paz", "Yuma", "Maricopa"
+    };
+
+    public Graph() {
+        // Initialize adjacency matrix with max values indicating no direct path
+        for (int[] row : adjacencyMatrix) {
+            Arrays.fill(row, MAX_VALUE);
+        }
+    }
+
+    // Add edge to the graph
+    public void addEdge(int from, int to, int length) {
+        adjacencyMatrix[from][to] = length;
+        adjacencyMatrix[to][from] = length; // For undirected graph
+    }
+
+    // Get distance between two vertices
+    public int getDistance(int from, int to) {
+        return adjacencyMatrix[from][to];
+    }
+
+    // Get neighbors for a vertex
+    public List<Integer> getNeighbors(int vertex) {
+        List<Integer> neighbors = new ArrayList<>();
+        for (int i = 0; i < TABLE_SIZE; i++) {
+            if (adjacencyMatrix[vertex][i] != MAX_VALUE) {
+                neighbors.add(i);
+            }
+        }
+        return neighbors;
+    }
+
+    // Print adjacency matrix
+ // Print adjacency matrix with labels
+    public void printAdjacencyMatrix() {
+        // Print the header row for column labels
+        System.out.print("\t");
+        for (String vertex : vertices) {
+            System.out.print(vertex + "\t");
+        }
+        System.out.println();
+
+        // Print the matrix rows with row labels
+        for (int i = 0; i < TABLE_SIZE; i++) {
+            // Print the row label
+            System.out.print(vertices[i] + "\t");
+
+            for (int j = 0; j < TABLE_SIZE; j++) {
+                // Print the matrix cell value
+                System.out.print((adjacencyMatrix[i][j] == MAX_VALUE ? "∞" : adjacencyMatrix[i][j]) + "\t");
+            }
+            System.out.println(); // Newline at the end of each row
+        }
+    }
+
+
+    // Method to fill in the adjacency matrix based on the graph from the image
+    public void fillGraphWithEdges() {
+        //Implement edge additions based on the graph image
+        addEdge(0, 1, 14); // Mohave to Coconino with a distance of 14
+        addEdge(0, 11, 14); // Mohave to Yavapai with a distance of 14
+        addEdge(0, 12, 9); // Mohave to la paz with a distance of 14
+        addEdge(1, 2, 9); //coconino to navajo with 9
+        addEdge(1, 2, 9); //coconino to navajo with 9             
+        addEdge(2, 3, 5); //navajo to apache with 5
+        addEdge(3, 4, 17); //apache to greenlee with 17
+        addEdge(4, 5, 16); //greenlee to chochise with 16
+        addEdge(5, 6, 8); //chochise to Santa Cruz with 8
+        addEdge(6, 7, 6); //Santa Cruz to Pima with 6
+        addEdge(7, 8, 7); //Pima to Pinal with 7
+        addEdge(8, 9, 13); //Pinal to Graham with 13
+        addEdge(9, 10, 4); // Graham to Gila
+        addEdge(10, 11, 7); // Gila to Yavapai
+        addEdge(11, 13, 18); // Yavapai to Yuma
+        addEdge(11, 14, 15); // Yavapai to Maricopa
+        addEdge(13, 14, 23); // Yuma to Maricopa
+        addEdge(12, 13, 23); // La Paz to Yuma
+        addEdge(14, 8, 6); // Maricopa to Pinal
+        addEdge(8, 7, 8); // Pinal to Pima
+        addEdge(7, 6, 6); // Pima to Santa Cruz
+        addEdge(6, 5, 8); // Santa Cruz to Cochise
+        addEdge(5, 4, 16); // Cochise to Greenlee
+        addEdge(4, 3, 17); // Greenlee to Apache
+        addEdge(3, 2, 5); // Apache to Navajo
+        addEdge(2, 1, 9); // Navajo to Coconino
+        addEdge(1, 0, 14); // Coconino to Mohave
+
+        
+        // The rest of the edges will be added similarly
+    }
+
+    // Main method to test the Graph class
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.fillGraphWithEdges();
+        graph.printAdjacencyMatrix();
+    }
+}
+

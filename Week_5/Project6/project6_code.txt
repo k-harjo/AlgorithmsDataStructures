@@ -1,0 +1,161 @@
+package project6;
+
+class TreeNode {
+    String data;
+    TreeNode left, right;
+
+    public TreeNode(String item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+
+///////////////////////////////////////////////////////
+
+
+package project6;
+
+class SearchTree {
+    TreeNode root;
+
+    void insert(String data) {
+        root = insertRec(root, data);
+    }
+
+    TreeNode insertRec(TreeNode root, String data) {
+        if (root == null) {
+            root = new TreeNode(data);
+            return root;
+        }
+        if (data.compareTo(root.data) < 0)
+            root.left = insertRec(root.left, data);
+        else if (data.compareTo(root.data) > 0)
+            root.right = insertRec(root.right, data);
+        // Duplicate words not inserted
+        return root;
+    }
+
+    void inOrder() {
+        inOrderRec(root);
+    }
+
+    void inOrderRec(TreeNode root) {
+        if (root != null) {
+            inOrderRec(root.left);
+            System.out.print(root.data + " ");
+            inOrderRec(root.right);
+        }
+    }
+
+    boolean search(String data) {
+        return searchRec(root, data) != null;
+    }
+
+    TreeNode searchRec(TreeNode root, String data) {
+        if (root == null || root.data.equals(data))
+            return root;
+
+        if (root.data.compareTo(data) > 0)
+            return searchRec(root.left, data);
+        else
+            return searchRec(root.right, data);
+    }
+
+    void delete(String data) {
+        root = deleteRec(root, data);
+    }
+
+    TreeNode deleteRec(TreeNode root, String data) {
+        if (root == null) return root;
+
+        if (data.compareTo(root.data) < 0)
+            root.left = deleteRec(root.left, data);
+        else if (data.compareTo(root.data) > 0)
+            root.right = deleteRec(root.right, data);
+        else {
+            if (root.left == null)
+                return root.right;
+            else if (root.right == null)
+                return root.left;
+
+            root.data = minValue(root.right);
+            root.right = deleteRec(root.right, root.data);
+        }
+        return root;
+    }
+
+    String minValue(TreeNode root) {
+        String minv = root.data;
+        while (root.left != null) {
+            minv = root.left.data;
+            root = root.left;
+        }
+        return minv;
+    }
+}
+
+
+///////////////////////////////////////////////////////
+
+
+package project6;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class SearchTreeApplication {
+
+    public static void main(String[] args) {
+        SearchTree bst = new SearchTree();
+        try {
+            Scanner fileScanner = new Scanner(new File("input.txt"));
+            while (fileScanner.hasNext()) {
+                String word = fileScanner.next().replaceAll("[^a-zA-Z]", "").toLowerCase();
+                if (!word.isEmpty()) {
+                    bst.insert(word);
+                }
+            }
+            fileScanner.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found. Please check the path and file permissions.");
+            e.printStackTrace();
+            return;
+        }
+
+        // Print BST in-order
+        System.out.println("In-Order Traversal of BST:");
+        bst.inOrder();
+        System.out.println();
+
+        // Search interaction
+        Scanner inputScanner = new Scanner(System.in);
+        System.out.println("Enter words to search, type 'exit' to stop:");
+        while (inputScanner.hasNext()) {
+            String word = inputScanner.next();
+            if ("exit".equals(word)) {
+                break;
+            }
+            boolean found = bst.search(word);
+            System.out.println(found ? word + " found" : word + " not found");
+        }
+
+        // Deletion interaction
+        System.out.println("Enter words to delete, type 'exit' to stop:");
+        while (inputScanner.hasNext()) {
+            String word = inputScanner.next();
+            if ("exit".equals(word)) {
+                break;
+            }
+            bst.delete(word);
+            System.out.println("After deleting " + word + ":");
+            bst.inOrder();
+            System.out.println();
+        }
+
+        inputScanner.close();
+    }
+}
+       
+

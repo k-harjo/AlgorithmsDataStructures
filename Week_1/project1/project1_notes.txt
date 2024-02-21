@@ -1,0 +1,45 @@
+  a. Runtime Analysis
+
+1.  Constructors : All constructors run in `O(n)` time, where `n` is the length of the input string. Copying or initializing arrays typically takes linear time.
+  
+2.  toString() : Linear time `O(n)` to convert char array back to String.
+
+3.  length() : Constant time `O(1)` because we maintain the `curr_length` variable.
+
+4.  ensureCapacity() : In the worst case, this method is `O(n)` when resizing is needed.
+
+5.  concat() : This method runs in linear time `O(n + m)`, where `n` is the length of the original string and `m` is the length of the input string.
+
+6.  equals() : In the worst case (when strings are equal or nearly equal), this runs in `O(n)` where `n` is the length of the shorter string.
+
+7.  compareTo() : This runs in linear time `O(n)`, where `n` is the length of the shorter string.
+
+8.  getCharLoc() : Constant time `O(1)` since accessing an array by index is a constant-time operation.
+
+9.  toLower() and toUpper() : Both run in `O(n)` time to process each character in the string.
+
+10.  substring() and sliceSubstring() : Both methods run in `O(n)` time, where `n` is the length of the substring.
+
+11.  indexOf() and lastIndexOf() : The methods make use of Java's String methods internally. Their time complexity is `O(n * m)` in the worst case, where `n` is the length of the main string and `m` is the length of the target string.
+
+  b. Mathematics behind the number of steps:
+
+1.  Linear operations (O(n)) : These operations run a number of steps proportional to the input size. If you double the input size, you'd roughly double the number of steps.
+
+2.  Constant operations (O(1)) : No matter how big the input is, these operations take a fixed number of steps.
+
+3.  Quadratic operations (O(n^2)) : The number of steps grows with the square of the input size. Doubling the input size would quadruple the steps.
+
+In the provided `MyString` class, most operations are linear.
+
+  c. Difficulties or Points of Interest:
+
+1.  Memory Management : Managing the char array's size and ensuring its capacity can be tricky, especially since Java doesn't allow for dynamic resizing of arrays like in some other languages.
+
+2.  Efficiency : The class makes use of the standard Java `String` for certain operations like `indexOf`. This is for simplicity, but a custom implementation might offer more control over efficiency.
+
+3.  Error Handling : Implementing robust error handling, especially for methods that rely on indices, is crucial to ensure the class behaves predictably.
+
+4.  Character vs String Operations : Working at the character level (with char arrays) offers some efficiencies but can complicate operations that Java's `String` class handles easily. It's a trade-off between efficiency and simplicity.
+
+In summary, implementing a custom string class like `MyString` offers insights into how high-level string operations are broken down at a lower level. It's a great exercise in understanding data structures, memory management, and algorithmic efficiency.

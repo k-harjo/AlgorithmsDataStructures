@@ -1,0 +1,3 @@
+Statement of Work
+
+This is my, KariAnn Harjo's, original work. I wrote this script for Project2 in Eclipse IDE over the week of 10/9 to 10/13/2023.
